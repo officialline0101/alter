@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>予約フォーム</title>
+    <title>占いフォーム</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,7 +34,7 @@
             margin-bottom: 10px;
             font-weight: bold;
         }
-        input[type="text"], input[type="tel"], textarea {
+        input[type="text"], input[type="date"], textarea {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
@@ -63,14 +63,6 @@
             background-color: #444;
             color: #fff;
         }
-        .date-inputs input[type="datetime-local"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
         .submit-button {
             width: 100%;
             padding: 15px;
@@ -85,7 +77,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>a占いフォーム</h1>
+        <h1>占いフォーム</h1>
         <label>希望占い</label>
         <div class="visit-buttons">
             <button type="button" id="firstVisit" onclick="selectVisit(this)">数秘術占い</button>
@@ -105,10 +97,10 @@
             <button type="button" onclick="selectSymptom(this)">天命</button>
         </div>
 
-        <label for="date1">お誕生日（お時間は何時でも可）</label>
-        <input type="datetime-local" id="date1" placeholder="タップして日時を入力">
+        <label for="date1">生年月日（お時間は何時でも可）</label>
+        <input type="date" id="date1" placeholder="タップして日時を入力">
 
-        <label for="message">メッセージ（質問等お気軽にご記入ください）</label>
+        <label for="message">メッセージ（お悩みなどあればご記入ください）</label>
         <textarea id="message" rows="4" placeholder="メッセージを入力してください"></textarea>
 
         <button class="submit-button" onclick="submitForm()">占いを行う</button>
@@ -149,8 +141,6 @@
         }
 
         function submitForm() {
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
             const date1 = formatDate(document.getElementById('date1').value);
             const message = document.getElementById('message').value;
 
@@ -164,9 +154,9 @@
             // LINEトークにメッセージを送信
             liff.sendMessages([{
                 type: 'text',
-                text: `【予約フォーム】\nお名前：${formData.name}\n電話番号：${formData.phone}\n希望占い：${formData.visitCount}\nメニュー：${formData.selectedSymptom}\n希望日時：\n ${formData.dates[0]}\nメッセージ：${formData.message}`
+                text: `【占いフォーム】\n希望占い：${formData.visitCount}\n何を占いたいですか？：${formData.selectedSymptom}\n生年月日：${formData.dates[0]}\nメッセージ：${formData.message}`
             }]).then(() => {
-                alert('ご記入いただいた誕生日から占い結果をお伝えしますのでしばらくお待ちください... ' );
+                alert('ご記入いただいた誕生日から占い結果をお伝えしますのでしばらくお待ちください...');
                 // LIFFウィンドウを閉じる
                 liff.closeWindow();
             }).catch((err) => {
